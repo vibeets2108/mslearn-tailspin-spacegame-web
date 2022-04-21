@@ -10,40 +10,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET SDK 5.x'
-  condition: succeeded()
-  inputs:
-    packageType: sdk
-    version: '5.x'
-
-- task: Npm@1
-  displayName: 'Run npm install'
-  condition: succeeded()
-  inputs:
-    verbose: false
-
-- script: './node_modules/.bin/node-sass Tailspin.SpaceGame.Web/wwwroot --output Tailspin.SpaceGame.Web/wwwroot'
-  displayName: 'Compile Sass assets'
-  condition: succeeded()
-
-- task: gulp@1
-  displayName: 'Run gulp tasks'
-  condition: succeeded()
-
-- script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
-  displayName: 'Write build info'
-  workingDirectory: Tailspin.SpaceGame.Web/wwwroot
-  condition: succeeded()
-
-- task: DotNetCoreCLI@2
-  displayName: 'Restore project dependencies'
-  condition: succeeded()
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    
-
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - Release'
   condition: succeeded()
